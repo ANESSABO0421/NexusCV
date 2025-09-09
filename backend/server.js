@@ -3,18 +3,21 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connect } from "mongoose";
 import { connectDb } from "./config/db.js";
+import userRouter from "./routes/userRoute.js";
 
 const app = express();
 const port = 3000;
+dotenv.config()
 
 app.use(cors());
 
 // database
-connectDb()
+connectDb();
 
 // middleware
 app.use(express.json());
 
+app.use("/api/auth", userRouter);
 
 // routes
 app.get("/", (req, res) => {
@@ -24,4 +27,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`server created at http://localhost:${port}`);
 });
-

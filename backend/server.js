@@ -1,14 +1,20 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { connect } from "mongoose";
+import { connectDb } from "./config/db.js";
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 
+// database
+connectDb()
+
 // middleware
 app.use(express.json());
+
 
 // routes
 app.get("/", (req, res) => {
@@ -18,3 +24,4 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`server created at http://localhost:${port}`);
 });
+

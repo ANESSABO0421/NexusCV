@@ -77,7 +77,7 @@ export const createResume = async (req, res) => {
       ...req.body,
     });
 
-    res.send(201).json(newResume);
+    res.status(201).json(newResume);
   } catch (error) {
     console.log(error.message);
     res

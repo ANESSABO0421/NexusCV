@@ -48,7 +48,7 @@ const resumeSchema = new mongoose.Schema(
       startDate: String,
       endDate: String,
     },
-    skill: [
+    skills: [
       {
         name: String,
         progress: String,
@@ -63,7 +63,7 @@ const resumeSchema = new mongoose.Schema(
       },
     ],
 
-    certification: [{ title: String, issuer: String, year: String }],
+    certifications: [{ title: String, issuer: String, year: String }],
 
     languages: [
       {
@@ -72,10 +72,10 @@ const resumeSchema = new mongoose.Schema(
       },
     ],
 
-    intrests: [String],
+    interests: [String],
   },
   {
-    timeStamps: {
+    timestamps: {
       createdAt: "createAt",
       updatedAt: "updateAt",
     },

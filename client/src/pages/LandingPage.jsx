@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { landingPageStyles } from "../assets/dummystyle";
 import { Atom, MenuIcon, X } from "lucide-react";
+import { UserContext } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // user data from usercontext
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   return (
     <div className={landingPageStyles.container}>
       {/* header */}
@@ -30,9 +35,7 @@ const LandingPage = () => {
             )}
           </button>
           {/* nav links */}
-          <div className="hidden md:flex items-center">
-            {/* {user} */}
-          </div>
+          <div className="hidden md:flex items-center">{user}</div>
         </div>
       </header>
     </div>

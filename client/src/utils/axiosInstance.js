@@ -5,27 +5,28 @@ const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
   headers: {
-    "content-type": "application/json",
+    "Content-Type": "application/json",
     Accept: "application/json",
   },
 });
 
 // request interceptors
-axiosInstance.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem("token");
-  if (accessToken) {
-    config.headers.Autorization = `Bearer ${accessToken}`;
-  }
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("token");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
   (error) => {
     return Promise.reject(error);
-  };
-});
+  }
+);
 
 // response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response) {
       if (error.response.status === 401) {
@@ -34,7 +35,7 @@ axiosInstance.interceptors.response.use(
         console.error("Server error");
       }
     } else if (error.code === "ECONNABORTED") {
-      console.error("request timeout");
+      console.error("Request timeout");
     }
     return Promise.reject(error);
   }

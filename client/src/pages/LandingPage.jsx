@@ -1,9 +1,20 @@
 import React, { useContext, useState } from "react";
 import { landingPageStyles } from "../assets/dummystyle";
-import { ArrowRight, Atom, MenuIcon, X } from "lucide-react";
+import {
+  ArrowRight,
+  Atom,
+  Download,
+  LayoutTemplate,
+  MenuIcon,
+  X,
+  Zap,
+} from "lucide-react";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { ProfileInfoCard } from "../components/Cards";
+import Modal from "../components/Modal";
+import Login from "../components/Login";
+import SignUp from "../components/SignUp";
 
 const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -378,6 +389,133 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
+        {/* features section */}
+        <section className={landingPageStyles.featuresSection}>
+          <div className={landingPageStyles.featuresContainer}>
+            <div className={landingPageStyles.featuresHeader}>
+              <h2 className={landingPageStyles.featuresTitle}>
+                Why Choose{" "}
+                <span className={landingPageStyles.featuresTitleGradient}>
+                  NexusCV?
+                </span>
+              </h2>
+              <p className={landingPageStyles.featureDescription}>
+                Everything You need to create a professional resume that stands
+                out
+              </p>
+            </div>
+            <div className={landingPageStyles.featuresGrid}>
+              {[
+                {
+                  icon: <Zap className={landingPageStyles.featureIcon} />,
+                  title: "Lightning Fast",
+                  description:
+                    "Create professional resumes in under 5 minutes with our streamlined process",
+                  gradient: landingPageStyles.featureIconViolet,
+                  bg: landingPageStyles.featureCardViolet,
+                },
+                {
+                  icon: (
+                    <LayoutTemplate className={landingPageStyles.featureIcon} />
+                  ),
+                  title: "Pro Templates",
+                  description:
+                    "Choose from dozens of recruiter-approved, industry-specific templates",
+                  gradient: landingPageStyles.featureIconFuchsia,
+                  bg: landingPageStyles.featureCardFuchsia,
+                },
+                {
+                  icon: <Download className={landingPageStyles.featureIcon} />,
+                  title: "Instant Export",
+                  description:
+                    "Download high-quality PDFs instantly with perfect formatting",
+                  gradient: landingPageStyles.featureIconOrange,
+                  bg: landingPageStyles.featureCardOrange,
+                },
+              ].map((feature, index) => (
+                <div key={index} className={landingPageStyles.featureCard}>
+                  <div className={landingPageStyles.featureCardHover}></div>
+                  <div
+                    className={`${landingPageStyles.featureCardContent} ${feature.bg}`}
+                  >
+                    <div
+                      className={`${landingPageStyles.featureIconContainer} ${feature.gradient}`}
+                    >
+                      {feature.icon}
+                    </div>
+                    <h3 className={landingPageStyles.featureTitle}>
+                      {feature.title}
+                    </h3>
+                    <p className={landingPageStyles.featureDescription}>
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        {/* cta section */}
+        <section className={landingPageStyles.ctaSection}>
+          <div className={landingPageStyles.ctaContainer}>
+            <div className={landingPageStyles.ctaCard}>
+              <div className={landingPageStyles.ctaCardBg}></div>
+              <h2 className={landingPageStyles.ctaTitle}>
+                Ready to Build your{" "}
+                <span className={landingPageStyles.ctaTitleGradient}>
+                  Standout Resume?
+                </span>
+              </h2>
+              <p className={landingPageStyles.ctaDescription}>
+                Join thousands of proffessionals who landed their dream jobs
+                with our platform
+              </p>
+              <button
+                className={landingPageStyles.ctaButton}
+                onClick={handleCTA}
+              >
+                <div className={landingPageStyles.ctaButtonOverlay}></div>
+                <div className={landingPageStyles}></div>
+                <span className={landingPageStyles.ctaButtonText}>
+                  Start Building Now
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+        {/* footer section */}
+        <footer className={landingPageStyles.footer}>
+          <div className={landingPageStyles.footerContainer}>
+            <p className={landingPageStyles.footerText}>
+              Created By{" "}
+              <a
+                href="https://react-portofolio-omega.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Anees Aboobacker
+              </a>
+            </p>
+          </div>
+        </footer>
+        {/* Modal for login and Signup */}
+        <Modal
+          isOpen={openAuthModel}
+          onClose={() => {
+            setOpenAuthModel(false);
+            setCurrentPage("login");
+          }}
+          hideHeader
+        >
+          <div>
+            {currentPage === "login" && (
+              <Login setCurrentPage={setCurrentPage} />
+            )}
+            {currentPage === "signup" && (
+              <SignUp setCurrentPage={setCurrentPage} />
+            )}
+          </div>
+        </Modal>
       </main>
     </div>
   );

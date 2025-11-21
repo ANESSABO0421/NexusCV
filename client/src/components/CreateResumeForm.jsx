@@ -1,0 +1,51 @@
+import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
+import { API_PATH } from "../utils/apiPaths";
+
+const CreateResumeForm = () => {
+  const [title, setTitle] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const handleCreateResume = async (e) => {
+    e.preventDefault();
+    if (!title) {
+      setError("Please enter resume title");
+      return;
+    }
+    setError("");
+    try {
+      const response = await axiosInstance.post(API_PATH.RESUME.CREATE, {
+        title,
+      });
+      if (response.data?._id) {
+        navigate(`/resume/${response.data?._id}`);
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong.pLease try again later");
+      }
+    }
+  };
+
+  return (
+    <div className="w-full max-w-md p-8 bg-white rounded-2xl border border-gray-100 shadow-lg">
+      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+        Create New Resume
+      </h3>
+      <p className="text-gray-600 mb-8">
+        Give your resume a title to get Started.You can customize everything
+        Later
+      </p>
+      <form onSubmit={handleCreateResume}>
+        
+      </form>
+    </div>
+  );
+};
+
+export default CreateResumeForm;

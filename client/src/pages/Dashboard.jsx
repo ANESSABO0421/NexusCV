@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import { dashboardStyles as styles } from "../assets/dummystyle";
 import { useNavigate } from "react-router-dom";
-import { LucideFilePlus } from "lucide-react";
+import { LucideFilePlus, LucideTrash2 } from "lucide-react";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATH } from "../utils/apiPaths";
 import { ResumeSummaryCard } from "../components/Cards";
 import toast from "react-hot-toast";
 import moment from "moment";
+import Modal from "../components/Modal";
+import CreateResumeForm from "../components/CreateResumeForm";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ const Dashboard = () => {
   const [allResumes, setAllResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [resumeToDelete, setResumeToDelete] = useState(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Calculate completion percentage for a resume
   const calculateCompletion = (resume) => {
@@ -229,6 +231,54 @@ const Dashboard = () => {
         </div>
 
         {/* create modal */}
+        <Modal
+          isOpen={openCreateModal}
+          onClose={() => setOpenCreateModel(false)}
+          hideHeader
+          maxWidth="max-w-2xl"
+        >
+          <div className="p-6">
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle}>Create New Resume</h3>
+              <button
+                onClick={() => setOpenCreateModel(false)}
+                className={styles.modalCloseButton}
+              >
+                X
+              </button>
+            </div>
+            <CreateResumeForm
+              onSuccess={() => {
+                setOpenCreateModel(false);
+                fetchAllResumes();
+              }}
+            />
+          </div>
+        </Modal>
+        
+        {/* delete Modal */}
+        <Modal
+          isOpen={showDeleteConfirm}
+          onClose={() => setShowDeleteConfirm(false)}
+          title="Confirm Deletion"
+          showActionBtn
+          actionBtnText="Delete"
+          actionBtnClassName="bg-red-500 hover:bg-red-700"
+          onActionClick={handleDeleteClick}
+        >
+          <div className="p-4">
+            <div className="flex flex-col items-center text-center">
+              <div className={styles.deleteIconWrapper}>
+                <LucideTrash2 size={24} className="text-orange-600" />
+              </div>
+              <h3 className={styles.deleteTitle}>Delete Resume?</h3>
+              <p>
+                Are you sure you want to delete this resume?This action cannot
+                be undone
+              </p>
+            </div>
+          </div>
+        </Modal>
       </DashboardLayout>
     </div>
   );
